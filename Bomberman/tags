@@ -77,9 +77,9 @@ HALF_INDESTRUCTIBLE_WALL	Types.h	/^		HALF_INDESTRUCTIBLE_WALL,$/;"	e	enum:TT::Ti
 HasBomb	Player.cpp	/^bool Player::HasBomb() const$/;"	f	class:Player
 INDESTRUCTIBLE_WALL	Types.h	/^		INDESTRUCTIBLE_WALL,$/;"	e	enum:TT::TileType
 IncreaseRespawns	Player.cpp	/^void Player::IncreaseRespawns(short val)$/;"	f	class:Player
-Init	BombManager.cpp	/^void BombManager::Init(Level * level, std::vector<Player*>* players)$/;"	f	class:BombManager
+Init	BombManager.cpp	/^void BombManager::Init(Level * level, std::vector<AIPlayer*>* players)$/;"	f	class:BombManager
 Init	GUI.cpp	/^void GUI::Init(sf::Font * font, short textSize, int screenWidth, int screenHeight, bool* playAgain, bool* exit, bool* enterMenu)$/;"	f	class:GUI
-Init	PhysicsEngine.cpp	/^void PhysicsEngine::Init(Level * level, std::vector<Player*>* players)$/;"	f	class:PhysicsEngine
+Init	PhysicsEngine.cpp	/^void PhysicsEngine::Init(Level * level, std::vector<AIPlayer*>* players)$/;"	f	class:PhysicsEngine
 Initialize	Game.cpp	/^void Game::Initialize(float musicVolume, float soundVolume, int numberOfLives)$/;"	f	class:Game
 IsClicked	Option.cpp	/^bool Option::IsClicked()$/;"	f	class:Option
 IsCollidingWithBomb	Player.cpp	/^bool Player::IsCollidingWithBomb() const$/;"	f	class:Player
@@ -196,8 +196,8 @@ Update	PhysicsEngine.cpp	/^void PhysicsEngine::Update(float delta)$/;"	f	class:P
 Update	Player.cpp	/^void Player::Update(float dt)$/;"	f	class:Player
 Update	Ray.cpp	/^void Ray::Update(float dt)$/;"	f	class:Ray
 Update	Slider.cpp	/^void Slider::Update(sf::Vector2i mousePos, sf::Event* eventPointer)$/;"	f	class:Slider
-UpdateStats	GUI.cpp	/^void GUI::UpdateStats(std::vector<Player*>* players, short mouseX, short mouseY)$/;"	f	class:GUI
-UpdateStats	GUI.cpp	/^void GUI::UpdateStats(std::vector<Player*>* players, short mouseX, short mouseY, bool & playAgain, bool & exit, bool & enterMenu)$/;"	f	class:GUI
+UpdateStats	GUI.cpp	/^void GUI::UpdateStats(std::vector<AIPlayer*>* players, short mouseX, short mouseY)$/;"	f	class:GUI
+UpdateStats	GUI.cpp	/^void GUI::UpdateStats(std::vector<AIPlayer*>* players, short mouseX, short mouseY, bool & playAgain, bool & exit, bool & enterMenu)$/;"	f	class:GUI
 WEAK_WALL	Types.h	/^		WEAK_WALL,$/;"	e	enum:TT::TileType
 atlas	Animator.h	/^		TextureAtlas* atlas;$/;"	m	struct:Animator::AnimationStateInfo
 beg	Animator.h	/^		size_t beg; \/\/ first frame (inclusive)$/;"	m	struct:Animator::AnimationStateInfo
@@ -326,7 +326,7 @@ m_playAgainButton	GUI.h	/^	Button* m_playAgainButton;$/;"	m	class:GUI
 m_playerOneLives	GUI.h	/^	sf::Text* m_playerOneLives;$/;"	m	class:GUI
 m_playerSecondLives	GUI.h	/^	sf::Text* m_playerSecondLives;$/;"	m	class:GUI
 m_players	BombManager.h	/^	std::vector<AIPlayer*>* m_players;$/;"	m	class:BombManager
-m_players	Game.h	/^	std::vector<Player*> m_players;$/;"	m	class:Game
+m_players	Game.h	/^	std::vector<AIPlayer*> m_players;$/;"	m	class:Game
 m_players	PhysicsEngine.h	/^	std::vector<Player*> m_players;$/;"	m	class:PhysicsEngine
 m_playersAnimators	Game.h	/^	std::vector<Animator*>m_playersAnimators;$/;"	m	class:Game
 m_playersSlider	Menu.h	/^	Slider* m_playersSlider;$/;"	m	class:Menu

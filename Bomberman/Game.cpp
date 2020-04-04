@@ -363,7 +363,7 @@ void Game::initGameplay(const std::string & lvlPath)
 	m_playAgain = false;
 
 	m_physicsEngine->Init(m_level, &m_players);
-
+	m_players[0]->setMData(m_level);
 }
 
 void Game::pause()

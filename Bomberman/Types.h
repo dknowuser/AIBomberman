@@ -13,4 +13,19 @@ namespace TT {
 		BOMB,
 		COUNT
 	};
+
+	enum class TileState
+	{
+		NONE = 0,
+		AIPLAYER = 1,
+		PLAYER = 2,
+		BOMB = 4,
+		DANGER = 8,
+		PLACE_FOR_BOMB = 16
+	};
+
+	struct AITileType {
+		TileType tileType;
+		TileState tileState;
+	};
 }

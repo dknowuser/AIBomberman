@@ -120,3 +120,8 @@ void Level::SetLevelView(LevelView * view)
 {
 	m_view = view;
 }
+
+const std::vector< std::vector<TT::TileType> >& Level::GetMData(void) const
+{
+	return m_data;
+}

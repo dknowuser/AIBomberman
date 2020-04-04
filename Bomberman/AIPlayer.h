@@ -1,5 +1,6 @@
 #pragma once
 #include "Player.h"
+#include "Level.h"
 
 class AIPlayer: public Player
 {
@@ -12,6 +13,7 @@ class AIPlayer: public Player
 
 public:
 	void run(std::pair<int, int> &input);
+	void setMData(Level *m_level);
 private:
 	void getData(void);
 	void findEnemy(void);
@@ -23,4 +25,5 @@ private:
 	void placeBomb(void);	
 
 	AIPlayerStates state;
+	std::vector< std::vector<TT::AITileType> > m_data;
 };
