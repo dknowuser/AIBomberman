@@ -16,13 +16,8 @@ public:
 	void setMData(Level *m_level);
 private:
 	void getData(void);
-	void findEnemy(void);
-	void findEnemyDangerZone(void);
-	void findBombs(void);
-	void findDangerZone(void);
-	void buildPath(void);
-	void move(void);
-	void placeBomb(void);	
+	void clearLevelState(void);
+	void getMyPosition(void);
 
 	AIPlayerStates state;
 	std::vector< std::vector<TT::AITileType> > m_data;

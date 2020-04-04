@@ -15,10 +15,12 @@ void AIPlayer::setMData(Level *m_level)
 
 void AIPlayer::run(std::pair<int, int> &input)
 {
-	input.first = 1;
+	//input.first = 1;
 
 	switch(state) {
 	case AIPlayerStates::ANALYSE:
+		getData();
+		getMyPosition();
 		break;
 	
 	case AIPlayerStates::MOVE:
@@ -33,4 +35,28 @@ void AIPlayer::run(std::pair<int, int> &input)
 	default:
 		break;
 	};
+};
+
+void AIPlayer::getData(void)
+{
+	clearLevelState();
+};
+
+void AIPlayer::clearLevelState(void)
+{
+	int sizeX, sizeY;
+	sizeY = m_data.size();
+	sizeX =  m_data[0].size();
+	for(unsigned int i = 0; i < sizeY; i++)
+		for(unsigned int j = 0; j < sizeX; j++)
+			m_data[i][j].tileState = TT::TileState::NONE;
+};
+
+void AIPlayer::getMyPosition(void)
+{
+	int x, y;
+	x = this->GetPositionInTilesCoordsX();
+	y = this->GetPositionInTilesCoordsY();
+	m_data[y][x].tileState = (TT::TileState)((int)TT::TileState::AIPLAYER
+			+ (int)m_data[y][x].tileState);
 };
