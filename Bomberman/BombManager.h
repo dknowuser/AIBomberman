@@ -11,6 +11,7 @@ public:
 	~BombManager();
 	void Init(Level* level, std::vector<AIPlayer*>* players);
 	void Update(float dt);
+	std::map<std::pair<int*, int*>, Bomb*>* getBombs(void);
 private:
 	void gatherBombInformation();
 	void handleBombKicking(float dt);

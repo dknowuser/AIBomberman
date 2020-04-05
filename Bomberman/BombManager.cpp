@@ -109,3 +109,8 @@ void BombManager::gatherBombInformation()
 	}
 }
 
+std::map<std::pair<int*, int*>, Bomb*>* BombManager::getBombs(void)
+{
+	return &bombs;
+};
+

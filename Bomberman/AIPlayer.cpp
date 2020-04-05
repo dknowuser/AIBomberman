@@ -13,6 +13,16 @@ void AIPlayer::setMData(Level *m_level)
 	};
 };
 
+void AIPlayer::setPlayer(AIPlayer *player)
+{
+	m_player = player;
+};
+
+void AIPlayer::setBombs(std::map<std::pair<int*, int*>, Bomb*>* bombs)
+{
+	m_bombs = bombs;
+};
+
 void AIPlayer::run(std::pair<int, int> &input)
 {
 	//input.first = 1;
@@ -20,7 +30,6 @@ void AIPlayer::run(std::pair<int, int> &input)
 	switch(state) {
 	case AIPlayerStates::ANALYSE:
 		getData();
-		getMyPosition();
 		break;
 	
 	case AIPlayerStates::MOVE:
@@ -40,6 +49,9 @@ void AIPlayer::run(std::pair<int, int> &input)
 void AIPlayer::getData(void)
 {
 	clearLevelState();
+	getMyPosition();
+	getEnemyPosition();
+	getBombsAndDangerZones();
 };
 
 void AIPlayer::clearLevelState(void)
@@ -59,4 +71,18 @@ void AIPlayer::getMyPosition(void)
 	y = this->GetPositionInTilesCoordsY();
 	m_data[y][x].tileState = (TT::TileState)((int)TT::TileState::AIPLAYER
 			+ (int)m_data[y][x].tileState);
+};
+
+void AIPlayer::getEnemyPosition(void)
+{
+	int x, y;
+	x = m_player->GetPositionInTilesCoordsX();
+	y = m_player->GetPositionInTilesCoordsY();
+	m_data[y][x].tileState = (TT::TileState)((int)TT::TileState::PLAYER
+			+ (int)m_data[y][x].tileState);
+};
+
+void AIPlayer::getBombsAndDangerZones(void)
+{
+	std::map<std::pair<int*, int*>, Bomb*>::iterator it = m_bombs->begin();
 };
