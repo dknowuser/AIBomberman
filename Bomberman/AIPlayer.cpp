@@ -52,6 +52,7 @@ void AIPlayer::getData(void)
 	getMyPosition();
 	getEnemyPosition();
 	getBombsAndDangerZones();
+	getBombPlaces();
 };
 
 void AIPlayer::clearLevelState(void)
@@ -70,7 +71,7 @@ void AIPlayer::getMyPosition(void)
 	x = this->GetPositionInTilesCoordsX();
 	y = this->GetPositionInTilesCoordsY();
 	m_data[y][x].tileState = (TT::TileState)((int)TT::TileState::AIPLAYER
-			+ (int)m_data[y][x].tileState);
+		+ (int)m_data[y][x].tileState);
 };
 
 void AIPlayer::getEnemyPosition(void)
@@ -79,10 +80,139 @@ void AIPlayer::getEnemyPosition(void)
 	x = m_player->GetPositionInTilesCoordsX();
 	y = m_player->GetPositionInTilesCoordsY();
 	m_data[y][x].tileState = (TT::TileState)((int)TT::TileState::PLAYER
-			+ (int)m_data[y][x].tileState);
+		+ (int)m_data[y][x].tileState);
 };
 
 void AIPlayer::getBombsAndDangerZones(void)
 {
-	std::map<std::pair<int*, int*>, Bomb*>::iterator it = m_bombs->begin();
+	int x, y;
+	std::map<std::pair<int*, int*>, Bomb*>::iterator it;
+	for(it = m_bombs->begin(); it != m_bombs->end(); it++) {
+		Bomb* tmpBomb = it->second;
+		x = tmpBomb->GetPositionInTileCoordinatesX();
+		y = tmpBomb->GetPositionInTileCoordinatesY();
+		m_data[y][x].tileState = (TT::TileState)((int)TT::TileState::BOMB
+			+ (int)m_data[y][x].tileState);
+
+		for(unsigned short i = 0; i < 5; i++) {
+			// Up
+			if((y - i) >= 0)
+				m_data[y - i][x].tileState = (TT::TileState)((int)TT::TileState::DANGER
+					+ (int)m_data[y][x].tileState);
+
+			// Down
+			if((y + i) < m_data.size())
+				m_data[y + i][x].tileState = (TT::TileState)((int)TT::TileState::DANGER
+					+ (int)m_data[y][x].tileState);
+
+			// Left
+			if((x - i) >= 0)
+				m_data[y][x - i].tileState = (TT::TileState)((int)TT::TileState::DANGER
+					+ (int)m_data[y][x].tileState);
+
+			// Right
+			if((x + i) < m_data[0].size())
+				m_data[y][x + i].tileState = (TT::TileState)((int)TT::TileState::DANGER
+					+ (int)m_data[y][x].tileState);
+		};
+	};
 };
+
+void AIPlayer::getBombPlaces(void)
+{
+	int sizeX, sizeY;
+	sizeY = m_data.size();
+	sizeX =  m_data[0].size();
+	for(int i = 0; i < sizeY; i++)
+		for(int j = 0; j < sizeX; j++) {
+			if(!((int)m_data[i][j].tileState & (int)TT::TileState::BOMB)
+					&& ((m_data[i][j].tileType == TT::TileType::NONE)
+					|| (m_data[i][j].tileType == TT::TileType::NONE_WITH_SHADOW))) {
+				// Up
+				bool placeBombUp = true;
+				bool playerUp = false;
+				for(unsigned short g = 0; g < 5; g++) {
+					if((i - g) > 0) {
+						if(m_data[i - g][j].tileState == TT::TileState::PLAYER) {
+							playerUp = true;
+							break;
+						};
+
+						placeBombUp *= (m_data[i - g][j].tileType == TT::TileType::NONE)
+							|| (m_data[i - g][j].tileType == TT::TileType::NONE_WITH_SHADOW);
+					};
+				};
+				placeBombUp *= playerUp;
+				if(placeBombUp) {
+					m_data[i][j].tileState = (TT::TileState)((int)TT::TileState::PLACE_FOR_BOMB
+						+ (int)m_data[i][j].tileState);
+					continue;
+				};
+
+				// Down
+				bool placeBombDown = true;
+				bool playerDown = false;
+				for(unsigned short g = 0; g < 5; g++) {
+					if((i + g) < (m_data.size() - 1)) {
+						if(m_data[i + g][j].tileState == TT::TileState::PLAYER) {
+							playerDown = true;
+							break;
+						};
+
+						placeBombDown *= (m_data[i + g][j].tileType == TT::TileType::NONE)
+							|| (m_data[i + g][j].tileType == TT::TileType::NONE_WITH_SHADOW);
+					};
+				};
+				placeBombDown *= playerDown;
+				if(placeBombDown) {
+					m_data[i][j].tileState = (TT::TileState)((int)TT::TileState::PLACE_FOR_BOMB
+						+ (int)m_data[i][j].tileState);
+					continue;
+				};
+
+				// Left
+				bool placeBombLeft = true;
+				bool playerLeft = false;
+				for(unsigned short g = 0; g < 5; g++) {
+					if((j - g) > 0) {
+						if(m_data[i][j - g].tileState == TT::TileState::PLAYER) {
+							playerLeft = true;
+							break;
+						};
+
+						placeBombLeft *= (m_data[i][j - g].tileType == TT::TileType::NONE)
+							|| (m_data[i][j - g].tileType == TT::TileType::NONE_WITH_SHADOW);
+					};
+				};
+				placeBombLeft *= playerLeft;
+				if(placeBombLeft) {
+					m_data[i][j].tileState = (TT::TileState)((int)TT::TileState::PLACE_FOR_BOMB
+						+ (int)m_data[i][j].tileState);
+					continue;
+				};
+
+				// Right
+				bool placeBombRight = true;
+				bool playerRight = false;
+				for(unsigned short g = 0; g < 5; g++) {
+					if((j + g) < (m_data[0].size() - 1)) {
+						if(m_data[i][j + g].tileState == TT::TileState::PLAYER) {
+							playerLeft = true;
+							break;
+						};
+
+						placeBombLeft *= (m_data[i][j + g].tileType == TT::TileType::NONE)
+							|| (m_data[i][j + g].tileType == TT::TileType::NONE_WITH_SHADOW);
+					};
+				};
+				placeBombRight *= playerRight;
+				if(placeBombRight) {
+					m_data[i][j].tileState = (TT::TileState)((int)TT::TileState::PLACE_FOR_BOMB
+						+ (int)m_data[i][j].tileState);
+					continue;
+				};
+			};
+		};
+
+};
+
