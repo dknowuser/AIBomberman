@@ -238,7 +238,7 @@ void AIPlayer::buildPathToBomb(void)
 	nodes[count] = &m_data[y][x];
 
 	while(!((int)nodes[count]->tileState & (int)TT::TileState::PLACE_FOR_BOMB)
-			&& (count < newCount)) {
+			&& (count < newCount) && (newCount < (m_data.size() *  m_data[0].size()))) {
 		// Up
 		if((nodes[count]->y - 1 >= 0) && !m_data[nodes[count]->y - 1][nodes[count]->x].parent
 				&& ((m_data[nodes[count]->y - 1][nodes[count]->x].tileType == TT::TileType::NONE)
@@ -246,12 +246,46 @@ void AIPlayer::buildPathToBomb(void)
 					       == TT::TileType::NONE_WITH_SHADOW)
 				       || (m_data[nodes[count]->y - 1][nodes[count]->x].tileType 
 					       == TT::TileType::BOMB))) {
-			nodes[count + 1] = &m_data[nodes[count]->y - 1][nodes[count]->x];
-			nodes[count + 1]->parent = nodes[count];
+			nodes[newCount] = &m_data[nodes[count]->y - 1][nodes[count]->x];
+			nodes[newCount]->parent = nodes[count];
+			newCount++;
+		};
+
+		// Right
+		if((nodes[count]->x + 1 >= 0) && !m_data[nodes[count]->y][nodes[count]->x + 1].parent
+				&& ((m_data[nodes[count]->y][nodes[count]->x + 1].tileType == TT::TileType::NONE)
+				       || (m_data[nodes[count]->y][nodes[count]->x + 1].tileType 
+					       == TT::TileType::NONE_WITH_SHADOW)
+				       || (m_data[nodes[count]->y][nodes[count]->x + 1].tileType 
+					       == TT::TileType::BOMB))) {
+			nodes[newCount] = &m_data[nodes[count]->y][nodes[count]->x + 1];
+			nodes[newCount]->parent = nodes[count];
 			newCount++;
 		};
 		
-		
+		// Down
+		if((nodes[count]->y + 1 < m_data.size()) && !m_data[nodes[count]->y + 1][nodes[count]->x].parent
+				&& ((m_data[nodes[count]->y + 1][nodes[count]->x].tileType == TT::TileType::NONE)
+				       || (m_data[nodes[count]->y + 1][nodes[count]->x].tileType 
+					       == TT::TileType::NONE_WITH_SHADOW)
+				       || (m_data[nodes[count]->y + 1][nodes[count]->x].tileType 
+					       == TT::TileType::BOMB))) {
+			nodes[newCount] = &m_data[nodes[count]->y + 1][nodes[count]->x];
+			nodes[newCount]->parent = nodes[count];
+			newCount++;
+		};
+
+		// Left
+		if((nodes[count]->x - 1 >= 0) && !m_data[nodes[count]->y][nodes[count]->x - 1].parent
+				&& ((m_data[nodes[count]->y][nodes[count]->x - 1].tileType == TT::TileType::NONE)
+				       || (m_data[nodes[count]->y][nodes[count]->x - 1].tileType 
+					       == TT::TileType::NONE_WITH_SHADOW)
+				       || (m_data[nodes[count]->y][nodes[count]->x - 1].tileType 
+					       == TT::TileType::BOMB))) {
+			nodes[newCount] = &m_data[nodes[count]->y][nodes[count]->x - 1];
+			nodes[newCount]->parent = nodes[count];
+			newCount++;
+		};
 
 		count++;
 	};
