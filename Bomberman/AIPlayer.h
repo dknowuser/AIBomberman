@@ -24,10 +24,14 @@ private:
 	void getEnemyPosition(void);
 	void getBombsAndDangerZones(void);
 	void getBombPlaces(void);
+	void buildPathToBomb(void);
 
 	AIPlayerStates state;
-	std::vector< std::vector<TT::AITileType> > m_data;
+	std::vector<std::vector<TT::AITileType>> m_data;
 	AIPlayer *m_player;
 	std::map<std::pair<int*, int*>, Bomb*>* m_bombs;
+	std::vector<std::pair<int, int>> m_path;
+
+	TT::AITileType** nodes;
 };
 

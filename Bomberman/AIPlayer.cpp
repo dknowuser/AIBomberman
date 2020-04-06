@@ -9,6 +9,9 @@ void AIPlayer::setMData(Level *m_level)
 		for(unsigned int j = 0; j < m_level->GetWidth(); j++) {
 			m_data[i][j].tileType = im_data[i][j];
 			m_data[i][j].tileState = TT::TileState::NONE;
+			m_data[i][j].parent = nullptr;
+			m_data[i][j].y = i;
+			m_data[i][j].x = j;
 		};
 	};
 };
@@ -53,6 +56,8 @@ void AIPlayer::getData(void)
 	getEnemyPosition();
 	getBombsAndDangerZones();
 	getBombPlaces();
+	buildPathToBomb();
+	state = AIPlayerStates::MOVE;
 };
 
 void AIPlayer::clearLevelState(void)
@@ -214,5 +219,43 @@ void AIPlayer::getBombPlaces(void)
 			};
 		};
 
+};
+
+void AIPlayer::buildPathToBomb(void)
+{
+	unsigned int count = 0; 
+	unsigned int newCount = 1;
+	int x = this->GetPositionInTilesCoordsX();
+	int y = this->GetPositionInTilesCoordsY();
+	m_path.clear();
+	for(unsigned int i = 0; i < m_data.size(); i++) {
+		for(unsigned int j = 0; j < m_data[0].size(); j++) {
+			m_data[i][j].parent = nullptr;
+		};
+	};
+
+	nodes = new TT::AITileType*[m_data.size() *  m_data[0].size() * sizeof(TT::AITileType*)];
+	nodes[count] = &m_data[y][x];
+
+	while(!((int)nodes[count]->tileState & (int)TT::TileState::PLACE_FOR_BOMB)
+			&& (count < newCount)) {
+		// Up
+		if((nodes[count]->y - 1 >= 0) && !m_data[nodes[count]->y - 1][nodes[count]->x].parent
+				&& ((m_data[nodes[count]->y - 1][nodes[count]->x].tileType == TT::TileType::NONE)
+				       || (m_data[nodes[count]->y - 1][nodes[count]->x].tileType 
+					       == TT::TileType::NONE_WITH_SHADOW)
+				       || (m_data[nodes[count]->y - 1][nodes[count]->x].tileType 
+					       == TT::TileType::BOMB))) {
+			nodes[count + 1] = &m_data[nodes[count]->y - 1][nodes[count]->x];
+			nodes[count + 1]->parent = nodes[count];
+			newCount++;
+		};
+		
+		
+
+		count++;
+	};
+
+	delete[] nodes;
 };
 

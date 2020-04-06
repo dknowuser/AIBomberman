@@ -27,5 +27,7 @@ namespace TT {
 	struct AITileType {
 		TileType tileType;
 		TileState tileState;
+		AITileType* parent;
+		int x, y;
 	};
 }
