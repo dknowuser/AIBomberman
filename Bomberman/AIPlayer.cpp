@@ -290,6 +290,18 @@ void AIPlayer::buildPathToBomb(void)
 		count++;
 	};
 
+	if((int)nodes[count]->tileState & (int)TT::TileState::PLACE_FOR_BOMB) {
+		TT::AITileType* currentTile = nodes[count];
+		std::pair<int, int> pair; // left - x, right - y
+		while(currentTile != &m_data[y][x]) {
+			pair.first = currentTile->x - currentTile->parent->x;
+			pair.second = currentTile->y - currentTile->parent->y;
+			m_path.push_back(pair);
+			currentTile = currentTile->parent;
+		};
+		std::reverse(m_path.begin(), m_path.end());
+	};
+
 	delete[] nodes;
 };
 
