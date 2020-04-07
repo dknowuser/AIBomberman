@@ -25,12 +25,15 @@ private:
 	void getBombsAndDangerZones(void);
 	void getBombPlaces(void);
 	void buildPathToBomb(void);
+	void move(std::pair<int, int> &input);
 
 	AIPlayerStates state;
 	std::vector<std::vector<TT::AITileType>> m_data;
 	AIPlayer *m_player;
 	std::map<std::pair<int*, int*>, Bomb*>* m_bombs;
 	std::vector<std::pair<int, int>> m_path;
+	bool isTileReached;
+	std::pair<int, int> nextPosition;
 
 	TT::AITileType** nodes;
 };

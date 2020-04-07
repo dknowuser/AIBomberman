@@ -36,6 +36,7 @@ void AIPlayer::run(std::pair<int, int> &input)
 		break;
 	
 	case AIPlayerStates::MOVE:
+		move(input);
 		break;
 	
 	case AIPlayerStates::PLACE:
@@ -292,7 +293,7 @@ void AIPlayer::buildPathToBomb(void)
 
 	if((int)nodes[count]->tileState & (int)TT::TileState::PLACE_FOR_BOMB) {
 		TT::AITileType* currentTile = nodes[count];
-		std::pair<int, int> pair; // left - x, right - y
+		std::pair<int, int> pair; // first - x, second - y
 		while(currentTile != &m_data[y][x]) {
 			pair.first = currentTile->x - currentTile->parent->x;
 			pair.second = currentTile->y - currentTile->parent->y;
@@ -303,5 +304,87 @@ void AIPlayer::buildPathToBomb(void)
 	};
 
 	delete[] nodes;
+	isTileReached = true;
+};
+
+void AIPlayer::move(std::pair<int, int> &input)
+{
+	if(m_path.empty()) {
+		input.first = 0;
+		input.second = 0;
+		return;
+	};
+
+	if(isTileReached) {
+		isTileReached = false;
+		//m_path.erase(m_path.begin());
+
+		// Right
+		if(m_path[0].first == 1) {
+			nextPosition.first = this->GetPositionX() + TILE_SIZE;
+			nextPosition.second = this->GetPositionY();
+			return;
+		};
+
+		// Left
+		if(m_path[0].first == -1) {
+			nextPosition.first = this->GetPositionX() - TILE_SIZE;
+			nextPosition.second = this->GetPositionY();
+			return;
+		};
+
+		// Down
+		if(m_path[0].second == 1) {
+			nextPosition.first = this->GetPositionX();
+			nextPosition.second = this->GetPositionY() + TILE_SIZE;
+			return;
+		};
+
+		// Up
+		if(m_path[0].second == -1) {
+			nextPosition.first = this->GetPositionX();
+			nextPosition.second = this->GetPositionY() - TILE_SIZE;
+			return;
+		};
+
+	}
+	else {
+		if((m_path[0].first == 1) && (this->GetPositionX() < nextPosition.first))
+			input.first = 1;
+
+		if((m_path[0].first == -1) && (this->GetPositionX() > nextPosition.first))
+			input.first = -1;
+
+		if((m_path[0].second == 1) && (this->GetPositionY() < nextPosition.second))
+			input.second = 1;
+
+		if((m_path[0].second == -1) && (this->GetPositionY() > nextPosition.second))
+			input.second = -1;
+
+
+		if((m_path[0].first == 1) && (this->GetPositionX() >= nextPosition.first)) {
+			m_path.erase(m_path.begin());
+			isTileReached = true;
+			return;
+		};
+
+		if((m_path[0].first == -1) && (this->GetPositionX() <= nextPosition.first)) {
+			m_path.erase(m_path.begin());
+			isTileReached = true;
+			return;
+		};
+
+		if((m_path[0].second == 1) && (this->GetPositionY() >= nextPosition.second)) {
+			m_path.erase(m_path.begin());
+			isTileReached = true;
+			return;
+		};
+
+		if((m_path[0].second == -1) && (this->GetPositionY() <= nextPosition.second)) {
+			m_path.erase(m_path.begin());
+			isTileReached = true;
+			return;
+		};
+	};
 };
 
