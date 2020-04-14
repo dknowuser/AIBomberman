@@ -273,10 +273,6 @@ void Game::processEvents()
 			{
 				m_players[1]->OnActionKeyPressed();
 			}
-			/*if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::LControl)
-			{
-				m_players[0]->OnActionKeyPressed();
-			}*/
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 			{

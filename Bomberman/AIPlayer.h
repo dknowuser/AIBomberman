@@ -8,7 +8,7 @@ class AIPlayer: public Player
 	enum class AIPlayerStates {
 		ANALYSE,
 		MOVE,
-		PLACE,
+		PLACE_AND_ANALYSE,
 		RUNAWAY
 	};
 
@@ -27,6 +27,7 @@ private:
 	void buildPathToBomb(void);
 	void move(std::pair<int, int> &input);
 	void placeBomb(void);
+	void buildPathToSafe(void);
 
 	AIPlayerStates state;
 	std::vector<std::vector<TT::AITileType>> m_data;
