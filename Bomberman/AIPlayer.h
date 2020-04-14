@@ -19,6 +19,7 @@ public:
 	void setBombs(std::map<std::pair<int*, int*>, Bomb*>* bombs);
 private:
 	void getData(void);
+	void placeAndAnalyse(void);
 	void clearLevelState(void);
 	void getMyPosition(void);
 	void getEnemyPosition(void);
@@ -28,6 +29,7 @@ private:
 	void move(std::pair<int, int> &input);
 	void placeBomb(void);
 	void buildPathToSafe(void);
+	void debug(std::pair<int, int> &input);
 
 	AIPlayerStates state;
 	std::vector<std::vector<TT::AITileType>> m_data;
