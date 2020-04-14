@@ -246,6 +246,7 @@ void Game::processEvents()
 			input[1].second = 1;
 
 		// AIPlayer makes his step
+		m_players[0]->refreshMData(m_level);
 		m_players[0]->run(input[0]);
 
 		for (int i = 0; i < 2; ++i)
@@ -280,7 +281,7 @@ void Game::processEvents()
 			}
 		}
 
-		// handle more events
+		// handle more eventsi
 	}
 }
 

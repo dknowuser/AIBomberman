@@ -16,6 +16,17 @@ void AIPlayer::setMData(Level *m_level)
 	};
 };
 
+void AIPlayer::refreshMData(Level *m_level)
+{
+	int sizeX, sizeY;
+	sizeY = m_data.size();
+	sizeX =  m_data[0].size();
+	std::vector< std::vector<TT::TileType> > im_data = m_level->GetMData();
+	for(unsigned int i = 0; i < sizeY; i++)
+		for(unsigned int j = 0; j < sizeX; j++)
+			m_data[i][j].tileType = im_data[i][j];
+};
+
 void AIPlayer::setPlayer(AIPlayer *player)
 {
 	m_player = player;
@@ -40,9 +51,13 @@ void AIPlayer::run(std::pair<int, int> &input)
 	case AIPlayerStates::PLACE_AND_ANALYSE:
 		placeAndAnalyse();
 		break;
-	
+
 	case AIPlayerStates::RUNAWAY:
 		move(input);
+		break;
+
+	case AIPlayerStates::WAIT:
+		wait();
 		break;
 	
 	default:
@@ -252,12 +267,10 @@ void AIPlayer::buildPathToBomb(void)
 			m_data[i][j].parent = nullptr;
 		};
 	};
-
 	nodes = new TT::AITileType*[m_data.size() *  m_data[0].size() * sizeof(TT::AITileType*)];
 	if(nodes) {
 		nodes[count] = &m_data[y][x];
-
-		while((count < newCount) && (newCount < (m_data.size() *  m_data[0].size()))
+		while((count < newCount) && (newCount < (m_data.size() * m_data[0].size()))
 				&& !((int)nodes[count]->tileState & (int)TT::TileState::PLACE_FOR_BOMB)) {
 			// Up
 			if((nodes[count]->y - 1 >= 0) && !m_data[nodes[count]->y - 1][nodes[count]->x].parent
@@ -310,7 +323,8 @@ void AIPlayer::buildPathToBomb(void)
 			count++;
 		};
 
-		if((int)nodes[count]->tileState & (int)TT::TileState::PLACE_FOR_BOMB) {
+		if((count < newCount) 
+				&& ((int)nodes[count]->tileState & (int)TT::TileState::PLACE_FOR_BOMB)) {
 			TT::AITileType* currentTile = nodes[count];
 			std::pair<int, int> pair; // first - x, second - y
 			while(currentTile != &m_data[y][x]) {
@@ -320,7 +334,7 @@ void AIPlayer::buildPathToBomb(void)
 				currentTile = currentTile->parent;
 			};
 			std::reverse(m_path.begin(), m_path.end());
-		};
+		}
 
 		delete[] nodes;
 	};
@@ -334,6 +348,8 @@ void AIPlayer::move(std::pair<int, int> &input)
 		input.second = 0;
 		if(state == AIPlayerStates::MOVE)
 			state = AIPlayerStates::PLACE_AND_ANALYSE;
+		else
+			state = AIPlayerStates::WAIT;
 		return;
 	};
 
@@ -414,7 +430,20 @@ void AIPlayer::placeBomb(void)
 	int x = this->GetPositionInTilesCoordsX();
 	int y = this->GetPositionInTilesCoordsY();
 	m_data[y][x].tileType = TT::TileType::BOMB;
+	myBomb.first = x;
+	myBomb.second = y;
 	this->OnActionKeyPressed();
+	debugVar = 0;
+};
+
+void AIPlayer::wait(void)
+{
+	if(m_data[myBomb.second][myBomb.first].tileType != TT::TileType::BOMB) {
+		if(debugVar < 50)
+			debugVar++;
+		else
+			state = AIPlayerStates::ANALYSE;
+	};
 };
 
 void AIPlayer::buildPathToSafe(void)
@@ -430,7 +459,7 @@ void AIPlayer::buildPathToSafe(void)
 		};
 	};
 
-	nodes = new TT::AITileType*[m_data.size() *  m_data[0].size() * sizeof(TT::AITileType*)];
+	nodes = new TT::AITileType*[m_data.size() * m_data[0].size() * sizeof(TT::AITileType*)];
 	nodes[count] = &m_data[y][x];
 
 	while(((int)nodes[count]->tileState & (int)TT::TileState::DANGER)
