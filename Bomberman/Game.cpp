@@ -245,19 +245,6 @@ void Game::processEvents()
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 			input[1].second = 1;
 
-		//Only for AI player
-		// handle horizontal axis
-		/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-			input[0].first = -1;
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-			input[0].first = 1;
-
-		// handle vertical axis
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-			input[0].second = -1;
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-			input[0].second = 1;*/
-
 		// AIPlayer makes his step
 		m_players[0]->run(input[0]);
 
@@ -286,10 +273,10 @@ void Game::processEvents()
 			{
 				m_players[1]->OnActionKeyPressed();
 			}
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::LControl)
+			/*if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::LControl)
 			{
 				m_players[0]->OnActionKeyPressed();
-			}
+			}*/
 
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 			{

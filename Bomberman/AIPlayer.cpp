@@ -28,8 +28,6 @@ void AIPlayer::setBombs(std::map<std::pair<int*, int*>, Bomb*>* bombs)
 
 void AIPlayer::run(std::pair<int, int> &input)
 {
-	//input.first = 1;
-
 	switch(state) {
 	case AIPlayerStates::ANALYSE:
 		getData();
@@ -40,6 +38,7 @@ void AIPlayer::run(std::pair<int, int> &input)
 		break;
 	
 	case AIPlayerStates::PLACE:
+		placeBomb();
 		break;
 	
 	case AIPlayerStates::RUNAWAY:
@@ -312,12 +311,12 @@ void AIPlayer::move(std::pair<int, int> &input)
 	if(m_path.empty()) {
 		input.first = 0;
 		input.second = 0;
+		state = AIPlayerStates::PLACE;
 		return;
 	};
 
 	if(isTileReached) {
 		isTileReached = false;
-		//m_path.erase(m_path.begin());
 
 		// Right
 		if(m_path[0].first == 1) {
@@ -386,5 +385,11 @@ void AIPlayer::move(std::pair<int, int> &input)
 			return;
 		};
 	};
+};
+
+void AIPlayer::placeBomb(void)
+{
+	this->OnActionKeyPressed();
+	state = AIPlayerStates::RUNAWAY;
 };
 

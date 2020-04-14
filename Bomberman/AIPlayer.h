@@ -26,6 +26,7 @@ private:
 	void getBombPlaces(void);
 	void buildPathToBomb(void);
 	void move(std::pair<int, int> &input);
+	void placeBomb(void);
 
 	AIPlayerStates state;
 	std::vector<std::vector<TT::AITileType>> m_data;
