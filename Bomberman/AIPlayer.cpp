@@ -263,7 +263,7 @@ void AIPlayer::buildPathToBomb(void)
 			m_data[i][j].parent = nullptr;
 		};
 	};
-	nodes = new TT::AITileType*[m_data.size() *  m_data[0].size() * sizeof(TT::AITileType*)];
+	nodes = new TT::AITileType*[m_data.size() * m_data[0].size() * sizeof(TT::AITileType*)];
 	if(nodes) {
 		nodes[count] = &m_data[y][x];
 		while((count < newCount) && (newCount < (m_data.size() * m_data[0].size()))
@@ -330,7 +330,7 @@ void AIPlayer::buildPathToBomb(void)
 				currentTile = currentTile->parent;
 			};
 			std::reverse(m_path.begin(), m_path.end());
-		}
+		};
 
 		delete[] nodes;
 	};
@@ -437,12 +437,8 @@ void AIPlayer::placeBomb(void)
 
 void AIPlayer::wait(void)
 {
-	if(m_data[myBomb.second][myBomb.first].tileType != TT::TileType::BOMB) {
-		if(debugVar < 50)
-			debugVar++;
-		else
-			state = AIPlayerStates::ANALYSE;
-	};
+	if(!this->m_bomb)
+		state = AIPlayerStates::ANALYSE;
 };
 
 void AIPlayer::buildPathToSafe(void)

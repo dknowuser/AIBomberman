@@ -90,12 +90,12 @@ public:
 
 protected:
 	Level * level;
+	Bomb * m_bomb;
 
 private:
 	sf::Sprite m_sprite;
 	Animator* m_animator;
 
-	Bomb * m_bomb;
 	Animator* m_bombAnimator;
 	TextureAtlas* m_bombTextureAtlas;
 
