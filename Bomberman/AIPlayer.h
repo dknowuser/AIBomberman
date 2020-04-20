@@ -1,7 +1,7 @@
 #pragma once
 #include "Player.h"
-#include "Level.h"
 #include "Bomb.h"
+#include "LevelView.h"
 
 class AIPlayer: public Player
 {

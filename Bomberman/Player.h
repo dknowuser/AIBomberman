@@ -88,8 +88,10 @@ public:
 
 	void SetVolume(float volume);
 
-private:
+protected:
 	Level * level;
+
+private:
 	sf::Sprite m_sprite;
 	Animator* m_animator;
 

@@ -125,3 +125,8 @@ const std::vector< std::vector<TT::TileType> >& Level::GetMData(void) const
 {
 	return m_data;
 }
+
+LevelView* Level::getLevelView(void) const
+{
+	return m_view;
+};

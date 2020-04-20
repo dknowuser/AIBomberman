@@ -48,7 +48,8 @@ public:
 	void SetTileAsBomb(size_t x, size_t y);
 
 	void SetLevelView(LevelView* view);
-	const std::vector< std::vector<TT::TileType> >& GetMData(void) const; 
+	const std::vector< std::vector<TT::TileType> >& GetMData(void) const;
+        LevelView* getLevelView(void) const;	
 
 private:
 	size_t m_width;

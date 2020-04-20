@@ -172,7 +172,7 @@ void AIPlayer::getBombPlaces(void)
 				bool playerUp = false;
 				for(short g = 0; g < 5; g++) {
 					if((i - g) > 0) {
-						if(m_data[i - g][j].tileState == TT::TileState::PLAYER) {
+						if((int)m_data[i - g][j].tileState & (int)TT::TileState::PLAYER) {
 							playerUp = true;
 							break;
 						};
@@ -185,15 +185,14 @@ void AIPlayer::getBombPlaces(void)
 				if(placeBombUp) {
 					m_data[i][j].tileState = (TT::TileState)((int)TT::TileState::PLACE_FOR_BOMB
 						| (int)m_data[i][j].tileState);
-					continue;
 				};
 
 				// Down
 				bool placeBombDown = true;
 				bool playerDown = false;
 				for(short g = 0; g < 5; g++) {
-					if((i + g) < (m_data.size() - 1)) {
-						if(m_data[i + g][j].tileState == TT::TileState::PLAYER) {
+					if((i + g) < m_data.size()) {
+						if((int)m_data[i + g][j].tileState & (int)TT::TileState::PLAYER) {
 							playerDown = true;
 							break;
 						};
@@ -206,15 +205,14 @@ void AIPlayer::getBombPlaces(void)
 				if(placeBombDown) {
 					m_data[i][j].tileState = (TT::TileState)((int)TT::TileState::PLACE_FOR_BOMB
 						| (int)m_data[i][j].tileState);
-					continue;
 				};
 
 				// Left
 				bool placeBombLeft = true;
 				bool playerLeft = false;
-				for(short g = 0; g < 5; g++) {
+				for(short g = 0; g < 4; g++) {
 					if((j - g) > 0) {
-						if(m_data[i][j - g].tileState == TT::TileState::PLAYER) {
+						if((int)m_data[i][j - g].tileState & (int)TT::TileState::PLAYER) {
 							playerLeft = true;
 							break;
 						};
@@ -227,20 +225,19 @@ void AIPlayer::getBombPlaces(void)
 				if(placeBombLeft) {
 					m_data[i][j].tileState = (TT::TileState)((int)TT::TileState::PLACE_FOR_BOMB
 						| (int)m_data[i][j].tileState);
-					continue;
 				};
 
 				// Right
 				bool placeBombRight = true;
 				bool playerRight = false;
-				for(short g = 0; g < 5; g++) {
-					if((j + g) < (m_data[0].size() - 1)) {
-						if(m_data[i][j + g].tileState == TT::TileState::PLAYER) {
-							playerLeft = true;
+				for(short g = 0; g < 4; g++) {
+					if((j + g) < m_data[0].size()) {
+						if((int)m_data[i][j + g].tileState & (int)TT::TileState::PLAYER) {
+							playerRight = true;
 							break;
 						};
 
-						placeBombLeft *= (m_data[i][j + g].tileType == TT::TileType::NONE)
+						placeBombRight *= (m_data[i][j + g].tileType == TT::TileType::NONE)
 							|| (m_data[i][j + g].tileType == TT::TileType::NONE_WITH_SHADOW);
 					};
 				};
@@ -248,7 +245,6 @@ void AIPlayer::getBombPlaces(void)
 				if(placeBombRight) {
 					m_data[i][j].tileState = (TT::TileState)((int)TT::TileState::PLACE_FOR_BOMB
 						| (int)m_data[i][j].tileState);
-					continue;
 				};
 			};
 		};
