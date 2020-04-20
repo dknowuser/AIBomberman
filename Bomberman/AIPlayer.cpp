@@ -210,7 +210,7 @@ void AIPlayer::getBombPlaces(void)
 				// Left
 				bool placeBombLeft = true;
 				bool playerLeft = false;
-				for(short g = 0; g < 4; g++) {
+				for(short g = 0; g < 5; g++) {
 					if((j - g) > 0) {
 						if((int)m_data[i][j - g].tileState & (int)TT::TileState::PLAYER) {
 							playerLeft = true;
@@ -230,7 +230,7 @@ void AIPlayer::getBombPlaces(void)
 				// Right
 				bool placeBombRight = true;
 				bool playerRight = false;
-				for(short g = 0; g < 4; g++) {
+				for(short g = 0; g < 5; g++) {
 					if((j + g) < m_data[0].size()) {
 						if((int)m_data[i][j + g].tileState & (int)TT::TileState::PLAYER) {
 							playerRight = true;
@@ -352,10 +352,16 @@ void AIPlayer::move(std::pair<int, int> &input)
 	if(isTileReached) {
 		isTileReached = false;
 
+		// Correct AIPlayer position
+		this->SetPositionX(static_cast<int>(this->GetPositionX() / TILE_SIZE) * TILE_SIZE + TILE_SIZE/2);
+		this->SetPositionY(static_cast<int>(this->GetPositionY() / TILE_SIZE) * TILE_SIZE + TILE_SIZE/2);
+
 		// Right
 		if(m_path[0].first == 1) {
 			nextPosition.first = this->GetPositionX() + TILE_SIZE;
 			nextPosition.second = this->GetPositionY();
+			/*this->level->getLevelView()->ChangeTileTexture(nextPosition.first / TILE_SIZE, 
+					nextPosition.second / TILE_SIZE, TT::TileType::DOUBLE_WEAK_WALL);*/
 			return;
 		};
 
@@ -363,6 +369,8 @@ void AIPlayer::move(std::pair<int, int> &input)
 		if(m_path[0].first == -1) {
 			nextPosition.first = this->GetPositionX() - TILE_SIZE;
 			nextPosition.second = this->GetPositionY();
+			/*this->level->getLevelView()->ChangeTileTexture(nextPosition.first / TILE_SIZE, 
+					nextPosition.second / TILE_SIZE, TT::TileType::INDESTRUCTIBLE_WALL);*/
 			return;
 		};
 
@@ -370,6 +378,8 @@ void AIPlayer::move(std::pair<int, int> &input)
 		if(m_path[0].second == 1) {
 			nextPosition.first = this->GetPositionX();
 			nextPosition.second = this->GetPositionY() + TILE_SIZE;
+			/*this->level->getLevelView()->ChangeTileTexture(nextPosition.first / TILE_SIZE, 
+					nextPosition.second / TILE_SIZE, TT::TileType::HALF_INDESTRUCTIBLE_WALL);*/
 			return;
 		};
 
@@ -377,9 +387,10 @@ void AIPlayer::move(std::pair<int, int> &input)
 		if(m_path[0].second == -1) {
 			nextPosition.first = this->GetPositionX();
 			nextPosition.second = this->GetPositionY() - TILE_SIZE;
+			/*this->level->getLevelView()->ChangeTileTexture(nextPosition.first / TILE_SIZE, 
+					nextPosition.second / TILE_SIZE, TT::TileType::WEAK_WALL);*/
 			return;
 		};
-
 	}
 	else {
 		if((m_path[0].first == 1) && (this->GetPositionX() < nextPosition.first))
