@@ -360,8 +360,6 @@ void AIPlayer::move(std::pair<int, int> &input)
 		if(m_path[0].first == 1) {
 			nextPosition.first = this->GetPositionX() + TILE_SIZE;
 			nextPosition.second = this->GetPositionY();
-			/*this->level->getLevelView()->ChangeTileTexture(nextPosition.first / TILE_SIZE, 
-					nextPosition.second / TILE_SIZE, TT::TileType::DOUBLE_WEAK_WALL);*/
 			return;
 		};
 
@@ -369,8 +367,6 @@ void AIPlayer::move(std::pair<int, int> &input)
 		if(m_path[0].first == -1) {
 			nextPosition.first = this->GetPositionX() - TILE_SIZE;
 			nextPosition.second = this->GetPositionY();
-			/*this->level->getLevelView()->ChangeTileTexture(nextPosition.first / TILE_SIZE, 
-					nextPosition.second / TILE_SIZE, TT::TileType::INDESTRUCTIBLE_WALL);*/
 			return;
 		};
 
@@ -378,8 +374,6 @@ void AIPlayer::move(std::pair<int, int> &input)
 		if(m_path[0].second == 1) {
 			nextPosition.first = this->GetPositionX();
 			nextPosition.second = this->GetPositionY() + TILE_SIZE;
-			/*this->level->getLevelView()->ChangeTileTexture(nextPosition.first / TILE_SIZE, 
-					nextPosition.second / TILE_SIZE, TT::TileType::HALF_INDESTRUCTIBLE_WALL);*/
 			return;
 		};
 
@@ -387,8 +381,6 @@ void AIPlayer::move(std::pair<int, int> &input)
 		if(m_path[0].second == -1) {
 			nextPosition.first = this->GetPositionX();
 			nextPosition.second = this->GetPositionY() - TILE_SIZE;
-			/*this->level->getLevelView()->ChangeTileTexture(nextPosition.first / TILE_SIZE, 
-					nextPosition.second / TILE_SIZE, TT::TileType::WEAK_WALL);*/
 			return;
 		};
 	}
