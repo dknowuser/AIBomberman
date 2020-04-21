@@ -36,6 +36,7 @@ void AIPlayer::run(std::pair<int, int> &input)
 {
 	switch(state) {
 	case AIPlayerStates::ANALYSE:
+		resetCounter = 0;
 		getData();
 		break;
 	
@@ -44,6 +45,7 @@ void AIPlayer::run(std::pair<int, int> &input)
 		break;
 	
 	case AIPlayerStates::PLACE_AND_ANALYSE:
+		resetCounter = 0;
 		placeAndAnalyse();
 		break;
 
@@ -80,8 +82,10 @@ void AIPlayer::getData(void)
 
 void AIPlayer::placeAndAnalyse(void)
 {
-	if(foundPlaceForBomb)
+	if(foundPlaceForBomb) {
 		placeBomb();
+		foundPlaceForBomb = false;
+	};
 	clearLevelState();
 	getMyPosition();
 	getBombsAndDangerZones();
@@ -350,6 +354,16 @@ void AIPlayer::move(std::pair<int, int> &input)
 		return;
 	};
 
+	if((resetCounter >= resetCount) && isTileReached) {
+		if(state == AIPlayerStates::MOVE) 
+			state = AIPlayerStates::ANALYSE;
+		else
+			state = AIPlayerStates::PLACE_AND_ANALYSE;
+		return; 
+	}
+	else
+		resetCounter++;
+
 	if(isTileReached) {
 		isTileReached = false;
 
@@ -436,6 +450,13 @@ void AIPlayer::placeBomb(void)
 
 void AIPlayer::wait(void)
 {
+	if(resetCounter >= resetCount) {
+		state = AIPlayerStates::PLACE_AND_ANALYSE;
+		return; 
+	}
+	else
+		resetCounter++;
+
 	if(!this->m_bomb)
 		state = AIPlayerStates::ANALYSE;
 };

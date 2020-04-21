@@ -46,5 +46,7 @@ private:
 	TT::AITileType** nodes;
 
 	int debugVar;
+	unsigned int resetCounter;
+	const unsigned int resetCount = 50;
 };
 
