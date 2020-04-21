@@ -32,11 +32,6 @@ void AIPlayer::setPlayer(AIPlayer *player)
 	m_player = player;
 };
 
-void AIPlayer::setBombs(std::map<std::pair<int*, int*>, Bomb*>* bombs)
-{
-	m_bombs = bombs;
-};
-
 void AIPlayer::run(std::pair<int, int> &input)
 {
 	switch(state) {
@@ -429,8 +424,6 @@ void AIPlayer::placeBomb(void)
 	int x = this->GetPositionInTilesCoordsX();
 	int y = this->GetPositionInTilesCoordsY();
 	m_data[y][x].tileType = TT::TileType::BOMB;
-	myBomb.first = x;
-	myBomb.second = y;
 	this->OnActionKeyPressed();
 	debugVar = 0;
 };

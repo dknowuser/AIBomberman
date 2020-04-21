@@ -129,7 +129,7 @@ void Game::Initialize(float musicVolume, float soundVolume, int numberOfLives)
 	m_music.setVolume(musicVolume);
 	m_players[0]->SetVolume(soundVolume);
 	m_players[1]->SetVolume(soundVolume);
-	m_music.play();
+	//m_music.play();
 	m_music.setLoop(true);
 
 }
@@ -349,7 +349,6 @@ void Game::initGameplay(const std::string & lvlPath)
 	m_physicsEngine->Init(m_level, &m_players);
 	m_players[0]->setMData(m_level);
 	m_players[0]->setPlayer(m_players[1]);
-	m_players[0]->setBombs(m_bombManager->getBombs());
 }
 
 void Game::pause()

@@ -121,7 +121,7 @@ Menu::Menu(size_t width, size_t height)
 		std::exit(1);
 	}
 
-	m_music.play();
+	//m_music.play();
 	m_music.setLoop(true);
 	m_music.setVolume(volume);
 	m_credits = false;
@@ -242,7 +242,7 @@ void Menu::processEvents()
 				m_game = new Game(m_window);
 				m_game->Initialize(volume, volume, playersLives);
 				m_exit = !m_game->Run();
-				m_music.play();
+				//m_music.play();
 				delete m_game;
 				return;
 			}

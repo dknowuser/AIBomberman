@@ -18,7 +18,6 @@ public:
 	void setMData(Level *m_level);
 	void refreshMData(Level *m_level);
 	void setPlayer(AIPlayer *player);
-	void setBombs(std::map<std::pair<int*, int*>, Bomb*>* bombs);
 private:
 	void getData(void);
 	void placeAndAnalyse(void);
@@ -37,11 +36,9 @@ private:
 	AIPlayerStates state;
 	std::vector<std::vector<TT::AITileType>> m_data;
 	AIPlayer *m_player;
-	std::map<std::pair<int*, int*>, Bomb*>* m_bombs;
 	std::vector<std::pair<int, int>> m_path;
 	bool isTileReached;
 	std::pair<int, int> nextPosition;
-	std::pair<int, int> myBomb;
 
 	TT::AITileType** nodes;
 
