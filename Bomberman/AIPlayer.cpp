@@ -556,8 +556,16 @@ void AIPlayer::Spawn()
 void AIPlayer::Respawn()
 {
         m_canBeDamaged = false;
-        Spawn();
+	AIPlayer::Spawn();
         m_respawns--;
         m_respawnClock.restart();
         m_soundHit.play();
+}
+
+void AIPlayer::OnBombCollision()
+{
+        if (m_canBeDamaged)
+        {
+		AIPlayer::Respawn();
+        }
 }

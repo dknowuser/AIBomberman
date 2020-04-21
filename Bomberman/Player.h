@@ -5,7 +5,6 @@
 #include "Animator.h"
 #include "Bomb.h"
 
-
 class Player : public sf::Drawable, public PhysicalBody
 {
 public:

@@ -329,7 +329,7 @@ void Game::initGameplay(const std::string & lvlPath)
 		else
 			m_players[i]->SetRespawnPosition(m_level->GetWidth() - 2, m_level->GetHeight() - 2);
 		m_players[i]->SetAfterRespawnSafeTime(2.5f);
-		m_players[i]->Spawn();
+		m_players[i]->AIPlayer::Spawn();
 
 		m_players[i]->SetColor(i);
 	}

@@ -20,6 +20,7 @@ public:
 	void setPlayer(AIPlayer *player);
 	void Spawn();
 	void Respawn();
+	void OnBombCollision(void);
 private:
 	void getData(void);
 	void placeAndAnalyse(void);
