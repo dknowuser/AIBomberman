@@ -18,6 +18,8 @@ public:
 	void setMData(Level *m_level);
 	void refreshMData(Level *m_level);
 	void setPlayer(AIPlayer *player);
+	void Spawn();
+	void Respawn();
 private:
 	void getData(void);
 	void placeAndAnalyse(void);
@@ -38,6 +40,7 @@ private:
 	AIPlayer *m_player;
 	std::vector<std::pair<int, int>> m_path;
 	bool isTileReached;
+	bool foundPlaceForBomb;
 	std::pair<int, int> nextPosition;
 
 	TT::AITileType** nodes;

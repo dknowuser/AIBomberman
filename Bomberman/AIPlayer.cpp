@@ -76,12 +76,12 @@ void AIPlayer::getData(void)
 	getBombsAndDangerZones();
 	getBombPlaces();
 	buildPathToBomb();
-	state = AIPlayerStates::MOVE;
 };
 
 void AIPlayer::placeAndAnalyse(void)
 {
-	placeBomb();
+	if(foundPlaceForBomb)
+		placeBomb();
 	clearLevelState();
 	getMyPosition();
 	getBombsAndDangerZones();
@@ -93,7 +93,7 @@ void AIPlayer::clearLevelState(void)
 {
 	int sizeX, sizeY;
 	sizeY = m_data.size();
-	sizeX =  m_data[0].size();
+	sizeX = m_data[0].size();
 	for(unsigned int i = 0; i < sizeY; i++)
 		for(unsigned int j = 0; j < sizeX; j++)
 			m_data[i][j].tileState = TT::TileState::NONE;
@@ -268,8 +268,8 @@ void AIPlayer::buildPathToBomb(void)
 					&& ((m_data[nodes[count]->y - 1][nodes[count]->x].tileType == TT::TileType::NONE)
 					       || (m_data[nodes[count]->y - 1][nodes[count]->x].tileType 
 						       == TT::TileType::NONE_WITH_SHADOW)
-					       || (m_data[nodes[count]->y - 1][nodes[count]->x].tileType 
-						       == TT::TileType::BOMB))) {
+					       /*|| (m_data[nodes[count]->y - 1][nodes[count]->x].tileType 
+						       == TT::TileType::BOMB)*/)) {
 				nodes[newCount] = &m_data[nodes[count]->y - 1][nodes[count]->x];
 				nodes[newCount]->parent = nodes[count];
 				newCount++;
@@ -280,8 +280,8 @@ void AIPlayer::buildPathToBomb(void)
 					&& ((m_data[nodes[count]->y][nodes[count]->x + 1].tileType == TT::TileType::NONE)
 					       || (m_data[nodes[count]->y][nodes[count]->x + 1].tileType 
 						       == TT::TileType::NONE_WITH_SHADOW)
-					       || (m_data[nodes[count]->y][nodes[count]->x + 1].tileType 
-						       == TT::TileType::BOMB))) {
+					       /*|| (m_data[nodes[count]->y][nodes[count]->x + 1].tileType 
+						       == TT::TileType::BOMB)*/)) {
 				nodes[newCount] = &m_data[nodes[count]->y][nodes[count]->x + 1];
 				nodes[newCount]->parent = nodes[count];
 				newCount++;
@@ -292,8 +292,8 @@ void AIPlayer::buildPathToBomb(void)
 					&& ((m_data[nodes[count]->y + 1][nodes[count]->x].tileType == TT::TileType::NONE)
 					       || (m_data[nodes[count]->y + 1][nodes[count]->x].tileType 
 						       == TT::TileType::NONE_WITH_SHADOW)
-					       || (m_data[nodes[count]->y + 1][nodes[count]->x].tileType 
-						       == TT::TileType::BOMB))) {
+					       /*|| (m_data[nodes[count]->y + 1][nodes[count]->x].tileType 
+						       == TT::TileType::BOMB)*/)) {
 				nodes[newCount] = &m_data[nodes[count]->y + 1][nodes[count]->x];
 				nodes[newCount]->parent = nodes[count];
 				newCount++;
@@ -304,8 +304,8 @@ void AIPlayer::buildPathToBomb(void)
 					&& ((m_data[nodes[count]->y][nodes[count]->x - 1].tileType == TT::TileType::NONE)
 					       || (m_data[nodes[count]->y][nodes[count]->x - 1].tileType 
 						       == TT::TileType::NONE_WITH_SHADOW)
-					       || (m_data[nodes[count]->y][nodes[count]->x - 1].tileType 
-						       == TT::TileType::BOMB))) {
+					       /*|| (m_data[nodes[count]->y][nodes[count]->x - 1].tileType 
+						       == TT::TileType::BOMB)*/)) {
 				nodes[newCount] = &m_data[nodes[count]->y][nodes[count]->x - 1];
 				nodes[newCount]->parent = nodes[count];
 				newCount++;
@@ -325,6 +325,12 @@ void AIPlayer::buildPathToBomb(void)
 				currentTile = currentTile->parent;
 			};
 			std::reverse(m_path.begin(), m_path.end());
+			foundPlaceForBomb = true;
+			state = AIPlayerStates::MOVE;
+		}
+		else {
+			foundPlaceForBomb = false;
+			state = AIPlayerStates::PLACE_AND_ANALYSE;
 		};
 
 		delete[] nodes;
@@ -457,8 +463,8 @@ void AIPlayer::buildPathToSafe(void)
 				&& ((m_data[nodes[count]->y - 1][nodes[count]->x].tileType == TT::TileType::NONE)
 				       || (m_data[nodes[count]->y - 1][nodes[count]->x].tileType 
 					       == TT::TileType::NONE_WITH_SHADOW)
-				       || (m_data[nodes[count]->y - 1][nodes[count]->x].tileType 
-					       == TT::TileType::BOMB))) {
+				       /*|| (m_data[nodes[count]->y - 1][nodes[count]->x].tileType 
+					       == TT::TileType::BOMB)*/)) {
 			nodes[newCount] = &m_data[nodes[count]->y - 1][nodes[count]->x];
 			nodes[newCount]->parent = nodes[count];
 			newCount++;
@@ -469,8 +475,8 @@ void AIPlayer::buildPathToSafe(void)
 				&& ((m_data[nodes[count]->y][nodes[count]->x + 1].tileType == TT::TileType::NONE)
 				       || (m_data[nodes[count]->y][nodes[count]->x + 1].tileType 
 					       == TT::TileType::NONE_WITH_SHADOW)
-				       || (m_data[nodes[count]->y][nodes[count]->x + 1].tileType 
-					       == TT::TileType::BOMB))) {
+				       /*|| (m_data[nodes[count]->y][nodes[count]->x + 1].tileType 
+					       == TT::TileType::BOMB)*/)) {
 			nodes[newCount] = &m_data[nodes[count]->y][nodes[count]->x + 1];
 			nodes[newCount]->parent = nodes[count];
 			newCount++;
@@ -481,8 +487,8 @@ void AIPlayer::buildPathToSafe(void)
 				&& ((m_data[nodes[count]->y + 1][nodes[count]->x].tileType == TT::TileType::NONE)
 				       || (m_data[nodes[count]->y + 1][nodes[count]->x].tileType 
 					       == TT::TileType::NONE_WITH_SHADOW)
-				       || (m_data[nodes[count]->y + 1][nodes[count]->x].tileType 
-					       == TT::TileType::BOMB))) {
+				       /*|| (m_data[nodes[count]->y + 1][nodes[count]->x].tileType 
+					       == TT::TileType::BOMB)*/)) {
 			nodes[newCount] = &m_data[nodes[count]->y + 1][nodes[count]->x];
 			nodes[newCount]->parent = nodes[count];
 			newCount++;
@@ -493,8 +499,8 @@ void AIPlayer::buildPathToSafe(void)
 				&& ((m_data[nodes[count]->y][nodes[count]->x - 1].tileType == TT::TileType::NONE)
 				       || (m_data[nodes[count]->y][nodes[count]->x - 1].tileType 
 					       == TT::TileType::NONE_WITH_SHADOW)
-				       || (m_data[nodes[count]->y][nodes[count]->x - 1].tileType 
-					       == TT::TileType::BOMB))) {
+				       /*|| (m_data[nodes[count]->y][nodes[count]->x - 1].tileType 
+					       == TT::TileType::BOMB)*/)) {
 			nodes[newCount] = &m_data[nodes[count]->y][nodes[count]->x - 1];
 			nodes[newCount]->parent = nodes[count];
 			newCount++;
@@ -519,3 +525,18 @@ void AIPlayer::buildPathToSafe(void)
 	isTileReached = true;
 };
 
+void AIPlayer::Spawn()
+{
+        SetPositionX(static_cast<int>(m_respawnPosition.x*TILE_SIZE + TILE_SIZE / 2));
+        SetPositionY(static_cast<int>(m_respawnPosition.y*TILE_SIZE + TILE_SIZE / 2));
+	state = AIPlayerStates::ANALYSE;
+}
+
+void AIPlayer::Respawn()
+{
+        m_canBeDamaged = false;
+        Spawn();
+        m_respawns--;
+        m_respawnClock.restart();
+        m_soundHit.play();
+}

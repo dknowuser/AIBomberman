@@ -91,6 +91,11 @@ public:
 protected:
 	Level * level;
 	Bomb * m_bomb;
+	sf::Vector2i m_respawnPosition;
+	bool m_canBeDamaged;
+	short m_respawns;
+	sf::Clock m_respawnClock;
+	sf::Sound m_soundHit;
 
 private:
 	sf::Sprite m_sprite;
@@ -100,17 +105,12 @@ private:
 	TextureAtlas* m_bombTextureAtlas;
 
 	TextureAtlas * m_bombRayTextureAtlas;
-	short m_respawns;
 	short m_maxNumberOfRespawns;
-	bool m_canBeDamaged;
-	sf::Clock m_respawnClock;
 	sf::Time m_respawnSafeTime;
 
 	bool m_isAlive;
 
 	bool m_isCollidingWithBomb;
-
-	sf::Vector2i m_respawnPosition;
 
 	sf::Vector2i m_sideBombCollidingWith;
 
@@ -122,7 +122,6 @@ private:
 
 	bool m_win;
 
-	sf::Sound m_soundHit;
 	sf::Sound m_soundPlant;
 	sf::SoundBuffer m_soundBufferHit;
 	sf::SoundBuffer m_soundBufferPlant;
